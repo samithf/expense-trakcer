@@ -1,7 +1,7 @@
 "use client";
 
 import { collection, addDoc, Timestamp } from "firebase/firestore";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 import { db } from "../../firebase.config";
@@ -9,6 +9,7 @@ import { ItemType } from "../types";
 
 const NewExpenseInput = () => {
   const [item, setItem] = useState({ name: "", amount: "" });
+  const inputRef = useRef<HTMLInputElement>(null);
 
   function capitalizeFirstLetter(value: string) {
     return value.charAt(0).toUpperCase() + value.slice(1);
@@ -30,6 +31,7 @@ const NewExpenseInput = () => {
 
     addItem(itemToBeSaved);
     setItem({ name: "", amount: "" });
+    inputRef.current?.focus();
   }
 
   const addItem = async (item: Omit<ItemType, "id">) => {
@@ -44,9 +46,11 @@ const NewExpenseInput = () => {
   return (
     <form onSubmit={onSubmitForm} className="flex gap-2 mb-10">
       <input
+        ref={inputRef}
         className="w-6/12 input"
         placeholder="Item name"
         value={item.name}
+        autoFocus
         onChange={(e) => setItem({ ...item, name: e.target.value })}
       ></input>
       <input
