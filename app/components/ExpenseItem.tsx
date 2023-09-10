@@ -2,9 +2,10 @@ import React from "react";
 import { doc, deleteDoc } from "firebase/firestore";
 import { db } from "@/firebase.config";
 import { motion } from "framer-motion";
+import { ItemType } from "../types";
 
-const ExpenseItem = ({ item }) => {
-  const deleteItem = async (id) => {
+const ExpenseItem = ({ item }: { item: ItemType }) => {
+  const deleteItem = async (id: string) => {
     await deleteDoc(doc(db, "items", id));
   };
 

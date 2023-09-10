@@ -1,13 +1,14 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import ExpenseItem from "./ExpenseItem";
-import { motion, LayoutGroup } from "framer-motion";
+import { LayoutGroup } from "framer-motion";
 import { collection, DocumentData, getDocs, onSnapshot, orderBy, query, Timestamp } from "firebase/firestore";
 import { db } from "@/firebase.config";
+import ExpenseItem from "./ExpenseItem";
+import { ItemType } from "../types";
 
-const ExpensesList = ({ setTotal }) => {
-  const [itemList, setItemList] = useState([]);
+const ExpensesList = ({ setTotal }: { setTotal: React.Dispatch<React.SetStateAction<number>> }) => {
+  const [itemList, setItemList] = useState<ItemType[]>([]);
   const [itemsLoading, setItemsLoading] = useState(true);
 
   useEffect(() => {
@@ -15,8 +16,8 @@ const ExpensesList = ({ setTotal }) => {
     const q = query(itemsRef, orderBy("date", "desc"));
 
     const unsub = onSnapshot(q, (snapshots) => {
-      const docs: any = [];
-      snapshots.forEach((doc: any) => {
+      const docs: ItemType[] = [];
+      snapshots.forEach((doc: DocumentData) => {
         docs.push({ ...doc.data(), id: doc.id });
       });
       setItemList(docs);

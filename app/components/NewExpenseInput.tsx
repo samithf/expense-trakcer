@@ -5,15 +5,16 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 
 import { db } from "../../firebase.config";
+import { ItemType } from "../types";
 
 const NewExpenseInput = () => {
   const [item, setItem] = useState({ name: "", amount: "" });
 
-  function capitalizeFirstLetter(value) {
+  function capitalizeFirstLetter(value: string) {
     return value.charAt(0).toUpperCase() + value.slice(1);
   }
 
-  function onSubmitForm(e) {
+  function onSubmitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const amount = parseInt(item.amount);
 
@@ -21,7 +22,7 @@ const NewExpenseInput = () => {
       return;
     }
 
-    const itemToBeSaved = {
+    const itemToBeSaved: Omit<ItemType, "id"> = {
       name: capitalizeFirstLetter(item.name),
       amount: amount,
       date: Timestamp.fromDate(new Date()),
@@ -31,7 +32,7 @@ const NewExpenseInput = () => {
     setItem({ name: "", amount: "" });
   }
 
-  const addItem = async (item) => {
+  const addItem = async (item: Omit<ItemType, "id">) => {
     try {
       const docRef = await addDoc(collection(db, "items"), item);
       //   console.log("Document written with ID: ", docRef.id);
