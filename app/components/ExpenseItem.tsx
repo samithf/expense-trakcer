@@ -15,11 +15,12 @@ const ExpenseItem = ({ item }: { item: ItemType }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { duration: 0.5 } }}
       exit={{ opacity: 0 }}
+      whileHover={{ scale: 1.02 }}
       className="flex gap-2 bg-gray-900 p-3 select-none"
     >
       <span className="w-6/12">{item.name}</span>
       <span className="w-4/12 text-right">${item.amount}</span>
-      <span className="w-2/12 text-right cursor-pointer" onClick={() => deleteItem(item.id)}>
+      <span className="w-2/12 text-right cursor-pointer hover:text-red-700" onClick={() => deleteItem(item.id)}>
         x
       </span>
     </motion.li>
